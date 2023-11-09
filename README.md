@@ -1,7 +1,7 @@
 # Criptos
 
 ##La Grafica solo se puede visualizar en web ya que por problemas con expo en android deja de funcionar.
-###Usar
+Look! Usar
 ```js
 npm --force install
 ```
