@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, SafeAreaView } from 'react-native';
 import Moneda from './componentes/Moneda';
 
 export default class App extends Component {
@@ -13,6 +13,7 @@ export default class App extends Component {
     }
   }
 
+
   cargarDatos = async () => {
     try {
       const res = await fetch(
@@ -20,10 +21,6 @@ export default class App extends Component {
       );
       const datos = await res.json();
       const datos2 = datos.filter((coin) => coin.symbol.includes("USDT"));
-
-    console.log(datos2);
-
-      console.log(datos);
       this.setState({ coins: datos2 });
     } catch (error) {
       console.error("Error", error);
@@ -38,8 +35,8 @@ export default class App extends Component {
     const { coins, refreshing, search } = this.state;
 
     return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#141414" />
+      <SafeAreaView  style={[styles.container]}>
+        <StatusBar backgroundColor="#141414" barStyle="light-content" />
 
         <View style={styles.header}>
           <Text style={styles.title}>CryptoMarket</Text>
@@ -51,15 +48,17 @@ export default class App extends Component {
           />
         </View>
 
+
         <FlatList
           style={styles.list}
           data={coins.filter(
             (coin) =>
-              //coin.name.toLowerCase().includes(search.toLowerCase()) ||
               coin.symbol.toLowerCase().includes(search.toLowerCase())
           )}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <Moneda coin={item} />}
+          renderItem={({ item }) => (
+            <Moneda coin={item}  />
+          )}
           refreshing={refreshing}
           onRefresh={async () => {
             this.setState({ refreshing: true });
@@ -67,7 +66,7 @@ export default class App extends Component {
             this.setState({ refreshing: false });
           }}
         />
-      </View>
+    </SafeAreaView >
     );
   }
 }
